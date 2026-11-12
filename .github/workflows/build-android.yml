@@ -31,8 +31,10 @@ jobs:
           sdkmanager --install "ndk;27.2.12479018"
           echo "ANDROID_NDK=$ANDROID_HOME/ndk/27.2.12479018" >> $GITHUB_ENV
 
+
       - name: Configure ARM64
         run: |
+          rm -rf build
           cmake -S llama.cpp -B build -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
             -DCMAKE_BUILD_TYPE=Release \
@@ -44,8 +46,10 @@ jobs:
             -DGGML_OPENMP=OFF \
             -DGGML_LLAMAFILE=OFF \
             -DGGML_BACKEND_DL=OFF \
+            -DLLAMA_BUILD_COMMON=ON \
+            -DLLAMA_BUILD_EXAMPLES=ON \
             -DLLAMA_BUILD_SERVER=ON \
-            -DLLAMA_BUILD_EXAMPLES=OFF \
+            -DLLAMA_BUILD_UI=OFF \
             -DLLAMA_BUILD_TESTS=OFF \
             -DLLAMA_BUILD_TOOLS=OFF
 
